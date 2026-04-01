@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>⚠️ EMERGENCY ALERT ⚠️ | April Fools Prank</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0a0c12;
+            font-family: 'Courier New', 'Segoe UI', 'Poppins', monospace;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Fake alert overlay - the "serious" looking page */
+        .serious-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            z-index: 100;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow-y: auto;
+        }
+
+        /* April Fools popup - hidden initially */
+        .april-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 90%;
+            max-width: 500px;
+            background: linear-gradient(135deg, #ff6b6b, #feca57, #ff9f4a);
+            border-radius: 40px;
+            padding: 2rem;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1000px rgba(0,0,0,0.8);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            border: 4px solid white;
+        }
+
+        .april-popup.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .april-popup h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 4px 4px 0 #c0392b;
+            margin-bottom: 1rem;
+            font-family: 'Comic Neue', cursive;
+        }
+
+        .april-popup p {
+            font-size: 1.3rem;
+            color: #fff;
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 30px;
+            margin: 1rem 0;
+        }
+
+        .april-popup button {
+            background: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            color: #e67e22;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: 0.2s;
+        }
+
+        .april-popup button:hover {
+            transform: scale(1.05);
+            background: #ffeaa7;
+        }
+
+        /* Emergency TV style content */
+        .emergency-container {
+            min-height: 100vh;
+            background: #000;
+            color: #00ff00;
+            padding: 2rem;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        /* Static noise effect */
+        .static-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-radial-gradient(circle, rgba(0,255,0,0.03) 0px, rgba(0,255,0,0.03) 2px, transparent 2px, transparent 4px);
+            pointer-events: none;
+            z-index: 5;
+            animation: staticFlicker 0.2s infinite;
+        }
+
+        @keyframes staticFlicker {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+
+        /* Blinking text */
+        .blink {
+            animation: blink-animation 1s step-end infinite;
+        }
+
+        @keyframes blink-animation {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .alert-header {
+            border: 3px solid #ff0000;
+            background: #1a0000;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .alert-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff0000;
+            letter-spacing: 3px;
+        }
+
+        .timestamp {
+            font-size: 0.9rem;
+            color: #88ff88;
+            margin-top: 0.5rem;
+        }
+
+        .warning-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff4444;
+            text-align: center;
+            margin: 2rem 0;
+            text-transform: uppercase;
+        }
+
+        .message-box {
+            background: #0f0f0f;
+            border-left: 5px solid #ff0000;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .countdown {
+            background: #111;
+            border: 2px solid #ff0000;
+            padding: 1rem;
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .fake-button {
+            background: #333;
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 1rem auto;
+            display: inline-block;
+            transition: 0.2s;
+            font-family: monospace;
+        }
+
+        .fake-button:hover {
+            background: #ff0000;
+            color: #000;
+            transform: scale(1.02);
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+            border-top: 1px solid #333;
+            padding-top: 1rem;
+        }
+
+        /* Hide scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff0000;
+            border-radius: 4px;
+        }
+
+        /* Confetti canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 600px) {
+            .alert-title { font-size: 1.3rem; }
+            .warning-text { font-size: 1.2rem; }
+            .message-box { font-size: 0.9rem; }
+            .countdown { font-size: 1.3rem; }
+            .april-popup h2 { font-size: 2rem; }
+        }
+
+        /* Scramble text effect */
+        .glitch {
+            text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #00ff00;
+            animation: glitch 0.3s infinite;
+        }
+        @keyframes glitch {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(2deg); }
+            40% { transform: skew(-2deg); }
+            60% { transform: skew(1deg); }
+            80% { transform: skew(-1deg); }
+            100% { transform: skew(0deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- The serious-looking fake emergency page -->
+    <div class="serious-page" id="seriousPage">
+        <div class="static-overlay"></div>
+        <div class="emergency-container">
+            <div class="alert-header">
+                <div class="alert-title">🚨 EMERGENCY BROADCAST SYSTEM 🚨</div>
+                <div class="timestamp">⚠️ CLASSIFIED - LEVEL CRIMSON ⚠️</div>
+                <div class="timestamp" id="liveTimestamp"></div>
+            </div>
+
+            <div class="warning-text blink">
+                ⚠️ WORLD WAR 2026 - IMMINENT THREAT DETECTED ⚠️
+            </div>
+
+            <div class="message-box">
+                <strong>🔴 BREAKING NEWS 🔴</strong><br><br>
+                <span id="scrambleText">ALLIANCE INTELLIGENCE CONFIRMS GLOBAL MILITARY MOBILIZATION. MULTIPLE NATIONS HAVE RAISED DEFCON LEVELS TO CRITICAL. SATELLITE IMAGERY SHOWS UNPRECEDENTED TROOP MOVEMENTS ACROSS ALL CONTINENTS. CIVILIANS ARE ADVISED TO SEEK SHELTER IMMEDIATELY.</span>
+            </div>
+
+            <div class="countdown" id="countdownTimer">
+                ⏰ GLOBAL COUNTDOWN: <span id="timer">00:00:00</span> ⏰
+            </div>
+
+            <div class="message-box">
+                <strong>📡 OFFICIAL STATEMENT FROM JOINT CHIEFS 📡</strong><br><br>
+                "This is not a drill. We are witnessing the largest military escalation since 1945. All international borders are sealed. Communication networks are under surveillance. Citizens must prepare for the unthinkable. Stay tuned to emergency frequencies. God help us all."
+                <br><br>
+                <span style="color: #ff8888;">— General Command, 01 APRIL 2026 —</span>
+            </div>
+
+            <div class="message-box">
+                <strong>🌍 AFFECTED REGIONS 🌍</strong><br><br>
+                ▪ NORTH AMERICA: Missile defense systems activated<br>
+                ▪ EUROPE: NATO emergency summit in progress<br>
+                ▪ ASIA-PACIFIC: Naval fleets deployed in strategic waters<br>
+                ▪ MIDDLE EAST: Oil supply lines severed<br>
+                ▪ RUSSIA: Nuclear protocol under review<br>
+                <br>
+                <span class="blink">⚠️ STAY INDOORS. AVOID MAJOR CITIES. ⚠️</span>
+            </div>
+
+            <div style="text-align: center; margin: 2rem 0;">
+                <div class="fake-button" id="revealPrankBtn">
+                    🔓 VIEW CLASSIFIED UPDATE 🔓
+                </div>
+                <div style="font-size: 0.7rem; color: #555; margin-top: 0.5rem;">
+                    * Authorized personnel only *
+                </div>
+            </div>
+
+            <div class="footer-note">
+                EAS • EMERGENCY ALERT SYSTEM • ALL CHANNELS MONITORED<br>
+                LAST UPDATE: 01-APR-2026 11:59:59 UTC
+            </div>
+        </div>
+    </div>
+
+    <!-- April Fools Popup (hidden initially) -->
+    <div class="april-popup" id="aprilPopup">
+        <h2>🎭 APRIL FOOLS! 🎭</h2>
+        <p>😂 <strong>YOU'VE BEEN PRANKED!</strong> 😂</p>
+        <p>No World War is happening in 2026!<br>
+        This was a fake emergency alert just to fool you!<br>
+        🤪 Happy April Fools Day! 🤪</p>
+        <p style="font-size: 1rem;">Your friends got you good! Share the laugh! 🎉</p>
+        <button id="closePopupBtn">🎈 CLOSE & CELEBRATE 🎈</button>
+    </div>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <script>
+        (function() {
+            // DOM elements
+            const seriousPage = document.getElementById('seriousPage');
+            const aprilPopup = document.getElementById('aprilPopup');
+            const revealBtn = document.getElementById('revealPrankBtn');
+            const closePopupBtn = document.getElementById('closePopupBtn');
+            const timerElement = document.getElementById('timer');
+            
+            // ---- Confetti System ----
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            let particles = [];
+            let animationId = null;
+            let confettiActive = false;
+
+            function resizeCanvas() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class ConfettiParticle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height - height;
+                    this.size = Math.random() * 8 + 4;
+                    this.speedY = Math.random() * 7 + 4;
+                    this.speedX = (Math.random() - 0.5) * 5;
+                    this.color = `hsl(${Math.random() * 360}, 85%, 65%)`;
+                    this.rotation = Math.random() * 360;
+                    this.rotSpeed = (Math.random() - 0.5) * 0.2;
+                }
+                update() {
+                    this.y += this.speedY;
+                    this.x += this.speedX;
+                    this.rotation += this.rotSpeed;
+                    return this.y < height + 100 && this.x > -100 && this.x < width + 100;
+                }
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation * Math.PI / 180);
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                    ctx.restore();
+                }
+            }
+
+            function startConfettiExplosion() {
+                if(animationId) cancelAnimationFrame(animationId);
+                particles = [];
+                for(let i = 0; i < 200; i++) {
+                    particles.push(new ConfettiParticle());
+                }
+                confettiActive = true;
+                
+                function animateConfetti() {
+                    if(!confettiActive) return;
+                    ctx.clearRect(0, 0, width, height);
+                    let anyAlive = false;
+                    for(let i = 0; i < particles.length; i++) {
+                        const alive = particles[i].update();
+                        particles[i].draw();
+                        if(alive) anyAlive = true;
+                    }
+                    if(anyAlive) {
+                        animationId = requestAnimationFrame(animateConfetti);
+                    } else {
+                        ctx.clearRect(0, 0, width, height);
+                        cancelAnimationFrame(animationId);
+                        animationId = null;
+                        confettiActive = false;
+                    }
+                }
+                animateConfetti();
+                
+                setTimeout(() => {
+                    if(confettiActive) {
+                        confettiActive = false;
+                        if(animationId) cancelAnimationFrame(animationId);
+                        ctx.clearRect(0, 0, width, height);
+                        animationId = null;
+                    }
+                }, 3000);
+            }
+
+            // ---- Live Timestamp with fake urgency ----
+            function updateTimestamp() {
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZoneName: 'short'
+                };
+                const timeStr = now.toLocaleDateString('en-US', options);
+                document.getElementById('liveTimestamp').innerHTML = `🕒 EMERGENCY FEED: ${timeStr} UTC 🕒`;
+            }
+            updateTimestamp();
+            setInterval(updateTimestamp, 1000);
+
+            // ---- Fake Countdown Timer (counts down to a random time but resets for drama) ----
+            let countdownSeconds = 23 * 3600 + 59 * 60 + 59; // 23:59:59 lookalike
+            function updateCountdown() {
+                if(countdownSeconds <= 0) {
+                    countdownSeconds = 24 * 3600; // reset to make it look like ongoing
+                }
+                const hours = Math.floor(countdownSeconds / 3600);
+                const minutes = Math.floor((countdownSeconds % 3600) / 60);
+                const seconds = countdownSeconds % 60;
+                timerElement.innerText = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+                countdownSeconds--;
+            }
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // ---- Scrambling text effect (makes it look glitchy) ----
+            const originalText = "ALLIANCE INTELLIGENCE CONFIRMS GLOBAL MILITARY MOBILIZATION. MULTIPLE NATIONS HAVE RAISED DEFCON LEVELS TO CRITICAL. SATELLITE IMAGERY SHOWS UNPRECEDENTED TROOP MOVEMENTS ACROSS ALL CONTINENTS. CIVILIANS ARE ADVISED TO SEEK SHELTER IMMEDIATELY.";
+            const scrambleElement = document.getElementById('scrambleText');
+            
+            function scrambleText() {
+                if(!scrambleElement) return;
+                const chars = "!@#$%^&*()_+{}:<>?ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    let scrambled = "";
+                    for(let i = 0; i < originalText.length; i++) {
+                        if(originalText[i] === ' ') {
+                            scrambled += ' ';
+                        } else if(Math.random() > 0.7 || iterations > 8) {
+                            scrambled += originalText[i];
+                        } else {
+                            scrambled += chars[Math.floor(Math.random() * chars.length)];
+                        }
+                    }
+                    scrambleElement.innerText = scrambled;
+                    iterations++;
+                    if(iterations > 12) {
+                        clearInterval(interval);
+                        scrambleElement.innerText = originalText;
+                    }
+                }, 70);
+            }
+            
+            // Random glitch every 8 seconds for dramatic effect
+            setInterval(() => {
+                if(seriousPage.style.display !== 'none') {
+                    scrambleText();
+                    // also add glitch class to warning
+                    const warningDiv = document.querySelector('.warning-text');
+                    if(warningDiv) {
+                        warningDiv.classList.add('glitch');
+                        setTimeout(() => warningDiv.classList.remove('glitch'), 300);
+                    }
+                }
+            }, 8000);
+            
+            // Initial scramble
+            setTimeout(scrambleText, 1000);
+
+            // ---- THE BIG REVEAL: April Fools Popup + full prank activation ----
+            function revealAprilFoolsPrank() {
+                // Hide the serious page with dramatic effect
+                seriousPage.style.transition = "opacity 0.6s ease-out, transform 0.5s";
+                seriousPage.style.opacity = "0";
+                seriousPage.style.transform = "scale(0.95)";
+                
+                // Show the April Fools popup with celebration
+                setTimeout(() => {
+                    seriousPage.style.display = "none";
+                    aprilPopup.classList.add('show');
+                    
+                    // Launch massive confetti
+                    startConfettiExplosion();
+                    
+                    // Also add extra confetti waves
+                    for(let i = 0; i < 3; i++) {
+                        setTimeout(() => startConfettiExplosion(), i * 400);
+                    }
+                    
+                    // Play a fake "airhorn" in mind? just for fun: change title
+                    document.title = "🎉 APRIL FOOLS! 🎉 | You Got Pranked!";
+                    
+                    // Create additional floating emojis for fun
+                    createFloatingEmojis();
+                    
+                }, 500);
+            }
+            
+            // Floating emojis for extra joy
+            function createFloatingEmojis() {
+                const emojis = ['🎭', '🤡', '🎉', '😜', '🤪', '😂', '🥳', '🎈', '💥', '🔥', '👻', '🎊'];
+                for(let i = 0; i < 30; i++) {
+                    const emoji = document.createElement('div');
+                    emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.position = 'fixed';
+                    emoji.style.left = Math.random() * 100 + '%';
+                    emoji.style.top = '100%';
+                    emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                    emoji.style.zIndex = '1002';
+                    emoji.style.pointerEvents = 'none';
+                    emoji.style.transition = 'all 4s ease-out';
+                    emoji.style.opacity = '1';
+                    document.body.appendChild(emoji);
+                    
+                    // Animate upwards
+                    setTimeout(() => {
+                        emoji.style.transform = `translateY(-${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`;
+                        emoji.style.opacity = '0';
+                    }, 50);
+                    
+                    setTimeout(() => emoji.remove(), 4500);
+                }
+            }
+            
+            // Close popup and show a final friendly message
+            function closePopupAndReset() {
+                aprilPopup.classList.remove('show');
+                // Show a friendly final message on the serious page but we can just reset to a funny ending page
+                seriousPage.style.display = "block";
+                seriousPage.style.opacity = "1";
+                seriousPage.style.transform = "scale(1)";
+                
+                // Override the serious content with funny April fools message
+                const emergencyContainer = document.querySelector('.emergency-container');
+                if(emergencyContainer) {
+                    emergencyContainer.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; min-height: 100vh; display: flex; flex-direction: column; justify-content: center;">
+                            <div style="font-size: 5rem;">🎉🤡🎉</div>
+                            <h1 style="color: #ffaa44; font-size: 3rem; margin: 1rem 0;">APRIL FOOLS!</h1>
+                            <div style="background: #1a1a2e; padding: 2rem; border-radius: 30px; margin: 2rem 0;">
+                                <p style="font-size: 1.5rem; color: #ff8888;">😂 You totally fell for the World War 2026 prank! 😂</p>
+                                <p style="font-size: 1.2rem; margin-top: 1rem;">Your friends wanted to give you a heart-stopping moment, but it's all in good fun!</p>
+                                <p style="font-size: 1.2rem;">No wars, no emergencies — just pure April Fool's mischief! 🎭</p>
+                                <p style="font-size: 1.5rem; font-weight: bold; margin-top: 1.5rem;">✨ Share the laugh with your friends! ✨</p>
+                            </div>
+                            <div class="fake-button" id="restartFun" style="background: #ffaa44; color: #000; border: none; margin-top: 1rem;">🎈 CELEBRATE AGAIN 🎈</div>
+                            <div class="footer-note" style="margin-top: 2rem;">Made with 😈 for April Fools 2026 • You've been officially pranked!</div>
+                        </div>
+                    `;
+                    
+                    // Re-attach celebration button
+                    const restartBtn = document.getElementById('restartFun');
+                    if(restartBtn) {
+                        restartBtn.addEventListener('click', () => {
+                            startConfettiExplosion();
+                            createFloatingEmojis();
+                        });
+                    }
+                }
+                
+                // Change page title
+                document.title = "😂 You Got Pranked! 😂 | April Fools";
+                
+                // Final confetti burst
+                startConfettiExplosion();
+                setTimeout(() => startConfettiExplosion(), 500);
+            }
+            
+            // Button to reveal prank (clicking the "CLASSIFIED UPDATE" button)
+            revealBtn.addEventListener('click', revealAprilFoolsPrank);
+            
+            // Close popup button leads to friendly aftermath
+            closePopupBtn.addEventListener('click', closePopupAndReset);
+            
+            // Also make the popup itself clickable to close
+            aprilPopup.addEventListener('click', (e) => {
+                if(e.target === aprilPopup || e.target.tagName === 'BUTTON') {
+                    // if button already handled, but fine
+                    if(e.target === closePopupBtn) return;
+                    closePopupAndReset();
+                }
+            });
+            
+            // Add extra trick: if user tries to refresh or close, but we keep it friendly
+            window.addEventListener('beforeunload', (e) => {
+                // Only show if the serious page is still visible (prank not revealed)
+                if(seriousPage.style.display !== 'none' && seriousPage.style.opacity !== '0') {
+                    e.preventDefault();
+                    e.returnValue = 'Wait! The world is at stake! ... Just kidding, it\'s an April Fools prank! 😂';
+                    return 'Wait! The world is at stake! ... Just kidding, it\'s an April Fools prank! 😂';
+                }
+            });
+            
+            // Auto fallback: if someone doesn't click the button after 15 seconds, still give them a hint but not spoil immediately
+            let hintTimeout = setTimeout(() => {
+                if(seriousPage.style.display !== 'none' && seriousPage.style.opacity !== '0') {
+                    const hintDiv = document.createElement('div');
+                    hintDiv.style.position = 'fixed';
+                    hintDiv.style.bottom = '20px';
+                    hintDiv.style.right = '20px';
+                    hintDiv.style.background = '#000000aa';
+                    hintDiv.style.color = '#ffaa44';
+                    hintDiv.style.padding = '10px 18px';
+                    hintDiv.style.borderRadius = '30px';
+                    hintDiv.style.fontSize = '0.8rem';
+                    hintDiv.style.fontFamily = 'monospace';
+                    hintDiv.style.zIndex = '200';
+                    hintDiv.style.backdropFilter = 'blur(8px)';
+                    hintDiv.innerHTML = '🤫 Psst... Click "CLASSIFIED UPDATE" for a surprise! 🤫';
+                    document.body.appendChild(hintDiv);
+                    setTimeout(() => {
+                        hintDiv.style.transition = '0.5s';
+                        hintDiv.style.opacity = '0';
+                        setTimeout(() => hintDiv.remove(), 1000);
+                    }, 5000);
+                }
+            }, 12000);
+            
+            // Add some dramatic audio-like vibration (no actual audio, just fun)
+            console.log("%c🔥⚠️ WORLD WAR 2026? ... APRIL FOOLS! ⚠️🔥", "color: red; font-size: 18px; font-weight: bold;");
+            console.log("%cYour friends got you! This is a harmless prank page. Share the laughter!", "color: orange; font-size: 14px;");
+            
+            // preload a subtle fake effect: mouse cursor creepy
+            document.body.style.cursor = "crosshair";
+            
+            // Add fake loading bar effect?
+            const style = document.createElement('style');
+            style.textContent = `
+                .fake-button:hover {
+                    animation: pulse 0.5s ease-in-out;
+                }
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); background: #ff4444; color: white; }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+        })();
+    </script>
+</body>
+</html>
